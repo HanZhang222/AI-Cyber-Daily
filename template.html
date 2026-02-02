@@ -1,236 +1,241 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI & Cyber Daily | 学习笔记</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <title>AI & Cyber Daily | 轻松阅读</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 调色板：温暖纸张与墨水 --- */
+        /* --- CSS 变量定义主题 (浅色/深色) --- */
         :root {
-            --bg-paper: #f8f5f2;      /* 米白纸张色 */
-            --ink: #2c3e50;           /* 墨水蓝黑 */
-            --card-bg: #ffffff;       /* 卡片纯白 */
-            --accent-yellow: #fff475; /* 荧光笔黄 */
-            --accent-blue: #cbf1f5;   /* 荧光笔蓝 */
-            --accent-pink: #fbcbf0;   /* 荧光笔粉 */
-            --border-width: 2px;      /* 粗边框 */
-            --shadow-offset: 4px;     /* 硬阴影偏移量 */
+            /* 浅色主题 (温暖惬意) */
+            --bg-body: #fdfcf8;       /* 奶油米色背景 */
+            --bg-card: #ffffff;       /* 纯白卡片 */
+            --text-main: #333333;     /* 深灰文字 */
+            --text-muted: #666666;    /* 次要文字 */
+            --border-color: #e0e0e0;
+            --accent-color: #f7b731;  /* 温暖的橙黄色点缀 */
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.1);
+            --card-radius: 16px;
         }
 
-        /* --- 全局重置 --- */
-        * {
-            box-sizing: border-box;
+        /* 深色主题 (舒适夜间) */
+        [data-theme="dark"] {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: #2a2a2a;
+            --accent-color: #f7b731;
+            --shadow: 0 4px 12px rgba(0,0,0,0.2);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.3);
         }
 
+        /* --- 全局样式 --- */
         body {
-            background-color: var(--bg-paper);
-            color: var(--ink);
-            font-family: 'Patrick Hand', cursive; /* 正文手写体 */
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 20px;
-            /* 背景点阵图案 (Dot Grid) */
-            background-image: radial-gradient(var(--ink) 1px, transparent 1px);
-            background-size: 20px 20px; /* 点阵间距 */
-            background-attachment: fixed;
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
         }
 
         /* --- 顶部 Header --- */
         header {
             max-width: 1600px;
-            margin: 20px auto 40px auto;
-            text-align: center;
-            padding: 20px;
-            background: var(--card-bg);
-            border: var(--border-width) solid var(--ink);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
-            border-radius: 2px; /* 稍微一点点圆角 */
-            position: relative;
+            margin: 0 auto 40px auto;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* 像贴在上面的胶带装饰 (纯 CSS 画的) */
-        header::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 30px;
-            background-color: rgba(255, 255, 255, 0.6);
-            border: 1px solid #ddd;
-            transform: translateX(-50%) rotate(-2deg);
-            z-index: 1;
-        }
-
-        h1 {
-            font-family: 'Gloria Hallelujah', cursive; /* 标题马克笔字体 */
-            font-size: 3rem;
+        .header-left h1 {
             margin: 0;
-            letter-spacing: 1px;
-            /* 模拟荧光笔高亮下划线 */
-            background: linear-gradient(120deg, var(--accent-yellow) 0%, var(--accent-yellow) 100%);
-            background-repeat: no-repeat;
-            background-size: 100% 40%;
-            background-position: 0 80%;
-            display: inline-block;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .date-badge {
-            display: block;
-            margin-top: 10px;
-            font-size: 1.2rem;
-            color: #666;
-            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: var(--bg-card);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
         }
 
-        /* --- 布局：响应式 Grid --- */
+        /* 功能按钮区域 */
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .action-btn:hover {
+            background-color: var(--border-color);
+        }
+        
+        /* --- 网格布局 --- */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 25px;
-            max-width: 1800px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-        /* 响应式断点 */
-        @media (max-width: 1600px) { .news-grid { grid-template-columns: repeat(4, 1fr); } }
-        @media (max-width: 1200px) { .news-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 900px)  { .news-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px)  { .news-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1400px) { .news-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 1100px) { .news-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 800px)  { .news-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px)  { .news-grid { grid-template-columns: 1fr; } }
 
-        /* --- 卡片样式 (Index Card / Sticky Note) --- */
+        /* --- 卡片样式 --- */
         .card {
-            background: var(--card-bg);
-            border: var(--border-width) solid var(--ink);
-            /* 硬阴影 Pop-Art 风格 */
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
-            border-radius: 0px; /* 直角，像便利贴 */
+            background: var(--bg-card);
+            border-radius: var(--card-radius);
+            border: 1px solid var(--border-color);
             overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             text-decoration: none;
             color: inherit;
-            height: 100%;
-            transition: all 0.2s ease-in-out;
-            position: relative;
+            height: 100%; /* 确保卡片等高 */
+            /* 纵向拉长，给内容更多空间 */
+            min-height: 450px; 
         }
 
-        /* 悬停交互：卡片浮起，阴影变长 */
         .card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--ink);
-            background-color: #fffdf0; /* 悬停时微微变暖黄 */
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-color);
         }
 
-        /* 图片区域 */
         .card-img-container {
-            height: 150px;
-            border-bottom: var(--border-width) solid var(--ink);
-            background-color: var(--accent-blue); /* 默认背景色 */
-            overflow: hidden;
+            height: 180px;
             position: relative;
-            /* 如果没图片，显示斜线纹理 */
-            background-image: repeating-linear-gradient(
-                45deg,
-                var(--accent-blue),
-                var(--accent-blue) 10px,
-                #e0f7fa 10px,
-                #e0f7fa 20px
-            );
+            background-color: #f0f0f0;
         }
 
         .card-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 图片本身是彩色的，但我们可以加一个滤镜让它复古一点 (可选) */
-            /* filter: sepia(0.2) contrast(1.1); */
         }
 
-        /* 来源标签 - 像标签贴纸 */
         .source-tag {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--accent-yellow);
-            border: var(--border-width) solid var(--ink);
-            color: var(--ink);
-            padding: 2px 8px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 2px 2px 0 var(--ink);
-            transform: rotate(2deg); /* 稍微歪一点 */
+            top: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        [data-theme="dark"] .source-tag { background: rgba(30,30,30,0.9); color: #fff; }
 
         .card-body {
-            padding: 15px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .card-title {
-            font-family: 'Gloria Hallelujah', cursive;
-            font-size: 1.2rem;
-            margin: 0 0 10px 0;
-            line-height: 1.3;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+            /* 限制标题为 3 行 */
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
         .card-summary {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #555;
-            /* 看起来像手写笔记 */
-            border-left: 3px solid #eee; 
-            padding-left: 10px;
-            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+            /* 限制摘要为 6 行，大约 50-60 字 */
             display: -webkit-box;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 6;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            flex-grow: 1;
         }
 
         .card-footer {
-            margin-top: auto;
-            border-top: 1px dashed #bbb; /* 虚线分割 */
-            padding-top: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
-            color: #888;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
         .read-more {
-            background: var(--ink);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: transform 0.2s;
+            color: var(--text-main);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        
-        .card:hover .read-more {
-            transform: scale(1.1);
-        }
+        .read-more::after { content: '→'; transition: transform 0.2s; }
+        .card:hover .read-more::after { transform: translateX(4px); }
+
+        /* 隐藏元素实用类 */
+        .hidden { display: none; }
 
     </style>
 </head>
 <body>
 
     <header>
-        <h1>My AI & Cyber Notes</h1>
-        <span class="date-badge">📅 {{ date_str }}</span>
+        <div class="header-left">
+            <h1>AI & Cyber Daily</h1>
+            <span class="date-badge">📅 {{ date_str }}</span>
+        </div>
+        <div class="header-actions">
+            <button id="lang-toggle" class="action-btn">
+                <span id="lang-icon">🌐</span>
+                <span id="lang-text">English</span>
+            </button>
+            <button id="theme-toggle" class="action-btn">
+                <span id="theme-icon">🌓</span>
+                <span id="theme-text">Dark Mode</span>
+            </button>
+        </div>
     </header>
 
     <main class="news-grid">
@@ -238,23 +243,78 @@
         <a href="{{ news.link }}" class="card" target="_blank">
             <div class="card-img-container">
                 {% if news.image_url %}
-                <img src="{{ news.image_url }}" alt="news image" class="card-img">
+                <img src="{{ news.image_url }}" alt="news cover" class="card-img">
                 {% endif %}
-                <span class="source-tag">{{ news.source | default('Note') }}</span>
+                <span class="source-tag">{{ news.source }}</span>
             </div>
             
             <div class="card-body">
-                <h3 class="card-title">{{ news.title }}</h3>
-                <p class="card-summary">{{ news.summary }}</p>
+                <h3 class="card-title lang-zh">{{ news.title_zh }}</h3>
+                <h3 class="card-title lang-en hidden">{{ news.title_en }}</h3>
+                
+                <p class="card-summary lang-zh">{{ news.summary_zh }}</p>
+                <p class="card-summary lang-en hidden">{{ news.summary_en }}</p>
                 
                 <div class="card-footer">
                     <span>{{ news.date }}</span>
-                    <span class="read-more">Read It →</span>
+                    <span class="read-more">Read</span>
                 </div>
             </div>
         </a>
         {% endfor %}
     </main>
+
+    <script>
+        // --- 1. 深色模式切换 ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const htmlElement = document.documentElement;
+
+        // 检查本地存储是否有用户偏好
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(currentTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(currentTheme);
+            localStorage.setItem('theme', currentTheme); // 保存偏好
+        });
+
+        function applyTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            themeIcon.textContent = theme === 'light' ? '🌓' : '☀️';
+            themeText.textContent = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        // --- 2. 中英文切换 ---
+        const langToggleBtn = document.getElementById('lang-toggle');
+        const langText = document.getElementById('lang-text');
+        let currentLang = 'zh'; // 默认中文
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguageDisplay();
+        });
+
+        function updateLanguageDisplay() {
+            // 切换按钮文字
+            langText.textContent = currentLang === 'zh' ? 'English' : '中文切换';
+            
+            // 获取所有带有语言标记的元素
+            const zhElements = document.querySelectorAll('.lang-zh');
+            const enElements = document.querySelectorAll('.lang-en');
+
+            // 根据当前语言显示/隐藏
+            if (currentLang === 'zh') {
+                zhElements.forEach(el => el.classList.remove('hidden'));
+                enElements.forEach(el => el.classList.add('hidden'));
+            } else {
+                zhElements.forEach(el => el.classList.add('hidden'));
+                enElements.forEach(el => el.classList.remove('hidden'));
+            }
+        }
+    </script>
 
 </body>
 </html>
