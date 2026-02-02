@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Cyber Daily | 学习笔记</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Patrick+Hand&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 调色板：温暖纸张与墨水 --- */
+        :root {
+            --bg-paper: #f8f5f2;      /* 米白纸张色 */
+            --ink: #2c3e50;           /* 墨水蓝黑 */
+            --card-bg: #ffffff;       /* 卡片纯白 */
+            --accent-yellow: #fff475; /* 荧光笔黄 */
+            --accent-blue: #cbf1f5;   /* 荧光笔蓝 */
+            --accent-pink: #fbcbf0;   /* 荧光笔粉 */
+            --border-width: 2px;      /* 粗边框 */
+            --shadow-offset: 4px;     /* 硬阴影偏移量 */
+        }
+
+        /* --- 全局重置 --- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            color: var(--ink);
+            font-family: 'Patrick Hand', cursive; /* 正文手写体 */
+            margin: 0;
+            padding: 20px;
+            /* 背景点阵图案 (Dot Grid) */
+            background-image: radial-gradient(var(--ink) 1px, transparent 1px);
+            background-size: 20px 20px; /* 点阵间距 */
+            background-attachment: fixed;
+        }
+
+        /* --- 顶部 Header --- */
+        header {
+            max-width: 1600px;
+            margin: 20px auto 40px auto;
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border: var(--border-width) solid var(--ink);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
+            border-radius: 2px; /* 稍微一点点圆角 */
+            position: relative;
+        }
+
+        /* 像贴在上面的胶带装饰 (纯 CSS 画的) */
+        header::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 1px solid #ddd;
+            transform: translateX(-50%) rotate(-2deg);
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Gloria Hallelujah', cursive; /* 标题马克笔字体 */
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 1px;
+            /* 模拟荧光笔高亮下划线 */
+            background: linear-gradient(120deg, var(--accent-yellow) 0%, var(--accent-yellow) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 80%;
+            display: inline-block;
+        }
+
+        .date-badge {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* --- 布局：响应式 Grid --- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 25px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* 响应式断点 */
+        @media (max-width: 1600px) { .news-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 1200px) { .news-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px)  { .news-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px)  { .news-grid { grid-template-columns: 1fr; } }
+
+        /* --- 卡片样式 (Index Card / Sticky Note) --- */
+        .card {
+            background: var(--card-bg);
+            border: var(--border-width) solid var(--ink);
+            /* 硬阴影 Pop-Art 风格 */
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
+            border-radius: 0px; /* 直角，像便利贴 */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+
+        /* 悬停交互：卡片浮起，阴影变长 */
+        .card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--ink);
+            background-color: #fffdf0; /* 悬停时微微变暖黄 */
+        }
+
+        /* 图片区域 */
+        .card-img-container {
+            height: 150px;
+            border-bottom: var(--border-width) solid var(--ink);
+            background-color: var(--accent-blue); /* 默认背景色 */
+            overflow: hidden;
+            position: relative;
+            /* 如果没图片，显示斜线纹理 */
+            background-image: repeating-linear-gradient(
+                45deg,
+                var(--accent-blue),
+                var(--accent-blue) 10px,
+                #e0f7fa 10px,
+                #e0f7fa 20px
+            );
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 图片本身是彩色的，但我们可以加一个滤镜让它复古一点 (可选) */
+            /* filter: sepia(0.2) contrast(1.1); */
+        }
+
+        /* 来源标签 - 像标签贴纸 */
+        .source-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-yellow);
+            border: var(--border-width) solid var(--ink);
+            color: var(--ink);
+            padding: 2px 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 2px 2px 0 var(--ink);
+            transform: rotate(2deg); /* 稍微歪一点 */
+        }
+
+        .card-body {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-family: 'Gloria Hallelujah', cursive;
+            font-size: 1.2rem;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-summary {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #555;
+            /* 看起来像手写笔记 */
+            border-left: 3px solid #eee; 
+            padding-left: 10px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            border-top: 1px dashed #bbb; /* 虚线分割 */
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .read-more {
+            background: var(--ink);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover .read-more {
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My AI & Cyber Notes</h1>
+        <span class="date-badge">📅 {{ date_str }}</span>
+    </header>
+
+    <main class="news-grid">
+        {% for news in news_list %}
+        <a href="{{ news.link }}" class="card" target="_blank">
+            <div class="card-img-container">
+                {% if news.image_url %}
+                <img src="{{ news.image_url }}" alt="news image" class="card-img">
+                {% endif %}
+                <span class="source-tag">{{ news.source | default('Note') }}</span>
+            </div>
+            
+            <div class="card-body">
+                <h3 class="card-title">{{ news.title }}</h3>
+                <p class="card-summary">{{ news.summary }}</p>
+                
+                <div class="card-footer">
+                    <span>{{ news.date }}</span>
+                    <span class="read-more">Read It →</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </main>
+
+</body>
+</html>
